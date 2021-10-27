@@ -56,11 +56,15 @@ public class BasicOpMode_Linear extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-    private Dcmotor leftMotor = null;
-    private DcMotor rightMotor = null;
+    private Dcmotor leftFrontMotor = null;
+    private DcMotor rightFrontMotor = null;
+    private Dcmotor leftBackMotor = null;
+    private DcMotor rightBackMotor = null;
     double power = 0.5
-    leftMotor = hardwareMap.dcMotor.get("left_Motor");
-    rightMotor = hardwareMap.dcMotor.get("right_Motor");
+    leftFrontMotor = hardwareMap.dcMotor.get("left_Front_Motor");
+    rightFrontMotor = hardwareMap.dcMotor.get("right_Front_Motor");
+    leftBackMotor = hardwareMap.dcMotor.get("left_Back_Motor");
+    rightBackMotor = hardwareMap.dcMotor.get("right_Back_Motor");
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
@@ -87,6 +91,8 @@ public class BasicOpMode_Linear extends LinearOpMode {
             // Setup a variable for each drive wheel to save power level for telemetry
             double leftPower;
             double rightPower;
+            double leftFrontPower;
+            double rightFrontPower;
 
             // Choose to drive using either Tank Mode, or POV Mode
             // Comment out the method that's not used.  The default below is POV.
@@ -95,8 +101,10 @@ public class BasicOpMode_Linear extends LinearOpMode {
             // - This uses basic math to combine motions and is easier to drive straight.
             double drive = -gamepad1.left_stick_y;
             double turn  =  gamepad1.right_stick_x;
+            double drive = -gamepad1.left_stick_x;
+            double turn  =  gamepad1.right_stick_y;
             leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
-            rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
+            rightPower   = Rang3e.clip(drive - turn, -1.0, 1.0) ;
 
             // Tank Mode uses one stick to control each wheel.
             // - This requires no math, but it is hard to drive forward slowly and keep straight.
@@ -106,6 +114,8 @@ public class BasicOpMode_Linear extends LinearOpMode {
             // Send calculated power to wheels
             leftDrive.setPower(leftPower);
             rightDrive.setPower(rightPower);
+            LeftFrontDrive.set(leftFrontPower);
+            rightFrontDrive.set(rightFrontPower);
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
